@@ -56,6 +56,7 @@ public class SuccessKilled {
                 ", userPhone=" + userPhone +
                 ", state=" + state +
                 ", createTime=" + createTime +
+                ", seckill=" + seckill +
                 '}';
     }
 }
