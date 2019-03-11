@@ -20,7 +20,7 @@
                         because a setting latter can help this. -->
     <select id="queryById" resultType="Seckill" parameterType="long">
         <!-- camel case has set-->
-        SELECT seckill_id, name, number, create_time, start_time, end_time
+        SELECT seckill_id,name,number,create_time,start_time,end_time
         FROM seckill
         WHERE seckill_id = #{seckillId}
     </select>

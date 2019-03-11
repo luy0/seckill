@@ -6,58 +6,49 @@
         http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context.xsd">
-
-    <!-- Spring and mybatis integration-->
-    <!-- 1.database, Redis parameters,
-           when loading several docs, before last second one, ignore-unresolvable is true -->
+    <!--spring and mybatis integration-->
+    <!--1. database properties: when loading several resources, ignore-unresolvable before the last second is true-->
     <context:property-placeholder location = "classpath:jdbc.properties" ignore-unresolvable="true"/>
 
-    <!-- 2.c3p0 database connection pool -->
+    <!--2. c3p0 connecting pool-->
     <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
-        <!-- basic property driverClass, jdbcUrl, user, password -->
+        <!--driverClass, url, user, password-->
         <property name="driverClass" value="${db.driver}" />
         <property name="jdbcUrl" value="${db.url}" />
         <property name="user" value="${db.username}" />
         <property name="password" value="${db.password}" />
 
-        <!-- c3p0 private property -->
-        <!-- maxPoolSize, default 15 -->
+        <!--c3p0-->
+        <!--maxPoolSize-->
         <property name="maxPoolSize" value="30"/>
-        <!-- minPoolSize, default 3 -->
+        <!--minPoolSize-->
         <property name="minPoolSize" value="10"/>
-        <!-- After closing connecting pool, remove it and not to auto commit, default false -->
+        <!--after closing connecting pool, do cleaning but do not auto commit-->
         <property name="autoCommitOnClose" value="false"/>
-        <!-- over-time connection, default 0 means keep waiting -->
+        <!--default 0, keep waiting-->
         <property name="checkoutTimeout" value="1000"/>
-        <!-- re-connecting times -->
+        <!--re-connect times-->
         <property name="acquireRetryAttempts" value="2"/>
     </bean>
-
-    <!-- agreement prior to setting -->
-    <!-- Following is the critical part for mybatis and spring integration setting -->
-    <!--３.set SqlSessionFactory object -->
+    <!--agreement prior than setting-->
+    <!--SqlSessionFactory object-->
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-        <!-- Loading database connecting pool -->
+        <!--mybatis and spring critical setting-->
+        <!--load to connecting pool-->
         <property name="dataSource" ref="dataSource"/>
-        <!-- set mybatis global xml: mybatis-config.xml -->
+        <!--mybatis global: mybatis-config.xml-->
         <property name="configLocation" value="classpath:mybatis-config.xml"/>
-        <!-- scan entity package to use class name and use ; for different name -->
+        <!--scan entity package, use class name and use ';' for multi package-->
         <property name="typeAliasesPackage" value="org.seckill.entity"/>
-        <!-- scan sql xml : corresponding xml for mapper -->
+        <!--scan sql: mapper's xml-->
         <property name="mapperLocations" value="classpath:mapper/*.xml"/>
     </bean>
 
-    <!--４:set Dao interface to implement it dynamically, and load to spring container -->
+    <!--scan Dao interface package, dynamically implement dao interface, loading to spring container-->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <!-- load SqlSessionFactory-->
+        <!--loading to SqlSessionFactory-->
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
-        <!-- provide Dao interface for scanning -->
+        <!--provide Dao interface-->
         <property name="basePackage" value="org.seckill.dao"/>
-    </bean>
-
-    <!-- load Dao setting to Bean container -->
-    <bean id="redisDao" class = "org.seckill.dao.RedisDao">
-        <constructor-arg index="0" value="${redis.ip}"/>
-        <constructor-arg index="1" value="${redis.port}"/>
     </bean>
 </beans>

@@ -2,29 +2,29 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--namespace for interface-->
 <mapper namespace="org.seckill.dao.SuccessKilledDao">
-    <insert id="insertSuccessKilled">
-        <!-- if a user purchase the same item, there is a conflict for key, so use ignore -->
-        insert ignore into success_killed(seckill_id, user_phone)
-        values (#{seckillId}, #{userPhone})
+    <!--purpose： provide dao interface with sql implement-->
+    <insert id = "insertSuccessKilled">
+        <!--avoiding a user to purchase the same item, use 'ignore' to ignore error-->
+        insert ignore into success_killed(seckill_id, user_phone,state)
+        values (#{seckilledId}, #{userPhone},1)
     </insert>
 
-    <select id="queryByIdWithSeckill" resultType="SuccessKilled">
-        <!-- how to make MyBatis map SQL to SuccessKilled object，and map that's seckill attribute -->
-        <!-- "seckill.seckill_id" is "seckill.seckillId" -->
+
+    <select id="queryByIdWithSeckill" resultType="org.seckill.entity.SuccessKilled">
+        <!--let MyBatis know how to map SQL to SuccessKilled object and map to seckill object of SuccessKilled object-->
+        <!--'seckill.seckill_id' == seckill.seckillId-->
         select
-            sk.seckill_id,
-            sk.user_phone,
-            sk.state,
-            sk.create_time,
-            s.seckill_id "seckill.seckill_id",
-            s.name "seckill.name",
-            s.number "seckill.number",
-            s.create_time "seckill.create_time",
-            s.start_time "seckill.start_time",
-            s.end_time "seckill.end_time"
-        from success_killed as sk
-        join seckill as s on sk.seckill_id = s.seckill_id
-        where sk.seckill_id = #{seckillId} and sk.user_phone = #{userPhone}
+        sk.seckill_id,sk.user_phone,sk.state,sk.create_time,
+        s.seckill_id "seckill.seckill_id",
+        s.name "seckill.name",
+        s.number "seckill.number",
+        s.create_time "seckill.create_time",
+        s.start_time "seckill.start_time",
+        s.end_time "seckill.end_time"
+        from success_killed as sk inner join seckill as s on sk.seckill_id=s.seckill_id
+        where sk.seckill_id=#{seckilledId} and sk.user_phone=#{userPhone}
     </select>
 </mapper>

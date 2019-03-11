@@ -35,7 +35,7 @@ CREATE TABLE success_killed (
 `user_phone` BIGINT NOT NULL COMMENT 'user phone number',
 `state` TINYINT NOT NULL DEFAULT -1 COMMENT 'State: -1:invalid 0:success 1:paid 2:shipped',
 `create_time` TIMESTAMP NOT NULL COMMENT 'purchase create time',
-PRIMARY KEY(seckill_id, user_phone), /*union key*/
+PRIMARY KEY(seckill_id, user_phone), /*union/*联合主键*/ key*/
 KEY idx_create_time(create_time)
 ) ENGINE=INNODB DEFAULT CHARSET=utf8 COMMENT='seckill success information table';
 
