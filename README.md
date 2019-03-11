@@ -1,4 +1,4 @@
-# seckill - Distributed Application for Purchasing erchandise
+# seckill - Distributed Application for Purchasing Merchandise
 * Developed back-end with Spring Boot to avoid overselling and redundant purchase during intensive activity in seconds.
 * Implemented the CRUD interface at DAO tier with Mybatis.
 * Integrating log4j and Spring AOP to intercept each http request at SpringMVC controller tier.
